@@ -8,7 +8,7 @@ class ChartInitial extends ChartState {
 }
 
 class ChartLoaded extends ChartState {
-  final List<dynamic> data;
+  final Map<String,dynamic> data;
 
   ChartLoaded({required this.data});
   @override

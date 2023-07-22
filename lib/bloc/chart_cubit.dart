@@ -9,17 +9,20 @@ class ChartCubit extends Cubit<ChartState> {
 
   ChartCubit({required this.repository}) : super(ChartInitial());
 
-  Future<void> getDataStatistical()async{
+  Future<void> getDataPast7Days()async{
     try{
       emit(ChartLoading());
       final data = await repository.getStatistical7days();
-      if(data.$1==null){
-        emit(ChartLoaded(data: data.$2!));
-      } else{
-        emit(ChartError());
-      }
+      data.fold(
+              (l) =>  emit(ChartError()),
+              (r) => emit(ChartLoaded(data: r!))
+      );
     }catch(e){
       print(e.toString());
     }
   }
+
+
+
+
 }
