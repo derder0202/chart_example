@@ -72,7 +72,6 @@ class _CountStatisticalWidgetState extends State<CountStatisticalWidget> {
             );
           }
           return const Text("error");
-
         },
       ),
     );
@@ -88,38 +87,59 @@ class ChartHolder extends StatefulWidget {
 }
 
 class _ChartHolderState extends State<ChartHolder> {
+  var _switchValue = true;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
       ChartCubit(repository: Repository())
         ..getDataPast7Days(),
-      child: Column(
-        children: [
-          SafeArea(child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: BlocBuilder<ChartCubit, ChartState>(
-              builder: (context, state) {
-                if (state is ChartLoading)
-                  return const Center(child: CircularProgressIndicator());
-                if (state is ChartLoaded) {
-                  return Column(
+      child: SafeArea(
+        child: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: BlocBuilder<ChartCubit, ChartState>(
+          builder: (context, state) {
+            if (state is ChartLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state is ChartLoaded) {
+              return Stack(
+                children: [
+                  Column(
                     children: [
-                      LineChartRevenue(data: state.data,),
-                      const SizedBox(height: 20,),
+                      LineChartRevenue(data: state.data),
+                      const SizedBox(height: 20),
                       AspectRatio(
                         aspectRatio: 1.6,
-                        child: BarChartCount(data: state.data,),
+                        child: Stack(
+                          children: [
+                            BarChartCount(data: state.data, isSendBill: _switchValue,),
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: Switch(
+                                value: _switchValue, // Replace with your own switch value
+                                onChanged: (value) {
+                                  setState(() {
+                                    _switchValue = value; // Replace with your own switch value update logic
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
-                  );
-                }
-                return const Text("error");
-              },
-            ),
-          )),
-        ],
+                  ),
+                ],
+              );
+            }
+            return const Text("error");
+          },
+        ),
       ),
+    ),
     );
   }
 }

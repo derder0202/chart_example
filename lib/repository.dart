@@ -15,7 +15,7 @@ class Repository{
   final dio = Dio();
   Future<Either<ExceptionServer, Map<String,dynamic>?>> getStatistical7days()async{
     try{
-      final res = await dio.get("http://192.168.0.106:3000/api/shops/64ace8982b17ca776de7ce17/statistical");
+      final res = await dio.get("http://192.168.0.106:3000/api/shops/64c7b6f9b79dfa0786135678/statistical");
       if(res.statusCode == 200){
         final data = res.data as Map<String,dynamic>;
         return Right(data);

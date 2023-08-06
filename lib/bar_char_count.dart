@@ -4,7 +4,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class BarChartCount extends StatefulWidget {
-  const BarChartCount({super.key, required this.data});
+  const BarChartCount({super.key, required this.data, required this.isSendBill});
+  final bool isSendBill;
   final Map<String,dynamic> data;
 
   @override
@@ -12,10 +13,10 @@ class BarChartCount extends StatefulWidget {
 }
 
 class _BarChartCountState extends State<BarChartCount> {
-
   @override
   Widget build(BuildContext context) {
-    int maxCount = widget.data.values.toList().map<int>((item) => int.parse(item['count'].toString())).reduce((a, b) => a > b ? a : b);
+    final String keyItem = widget.isSendBill? 'countSendBill' : 'countDoneBill';
+    int maxCount = widget.data.values.toList().map<int>((item) => int.parse(item[keyItem].toString())).reduce((a, b) => a > b ? a : b);
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.itemsBackground,
@@ -88,7 +89,7 @@ class _BarChartCountState extends State<BarChartCount> {
               x: index,
               barRods: [
                 BarChartRodData(
-                  toY: double.parse(widget.data.values.toList()[index]['count'].toString()),
+                  toY: double.parse(widget.data.values.toList()[index][keyItem].toString()),
                   gradient: _barsGradient,
                 )
               ],
