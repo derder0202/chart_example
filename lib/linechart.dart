@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 
 class LineChartRevenue extends StatefulWidget {
   const LineChartRevenue({super.key, required this.data});
-
   final Map<String,dynamic> data;
 
   @override
@@ -153,7 +152,8 @@ class _LineChartRevenueState extends State<LineChartRevenue> {
       lineBarsData: [
         LineChartBarData(
           spots: List.generate(days.length, (index){
-            double percentage = data.values.toList()[index]['totalPrice'] / maxTotalPrice;
+            final double temp = maxTotalPrice == 0? 1 : maxTotalPrice;
+            double percentage = data.values.toList()[index]['totalPrice'] / temp;
             return FlSpot(index.toDouble(),percentage*10);
           }
           ),
